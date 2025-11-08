@@ -12,7 +12,6 @@ const initialState = {
   message: '',
 };
 
-// Get all boards
 export const getBoards = createAsyncThunk('boards/getAll', async (_, thunkAPI) => {
   try {
     const token = thunkAPI.getState().auth.user.token;
@@ -32,7 +31,6 @@ export const getBoards = createAsyncThunk('boards/getAll', async (_, thunkAPI) =
   }
 });
 
-// Get single board
 export const getBoardById = createAsyncThunk(
   'boards/getById',
   async (id, thunkAPI) => {
@@ -55,7 +53,6 @@ export const getBoardById = createAsyncThunk(
   }
 );
 
-// Create board
 export const createBoard = createAsyncThunk(
   'boards/create',
   async (boardData, thunkAPI) => {
@@ -78,7 +75,6 @@ export const createBoard = createAsyncThunk(
   }
 );
 
-// Update board
 export const updateBoard = createAsyncThunk(
   'boards/update',
   async ({ id, boardData }, thunkAPI) => {
@@ -105,7 +101,6 @@ export const updateBoard = createAsyncThunk(
   }
 );
 
-// Delete board
 export const deleteBoard = createAsyncThunk(
   'boards/delete',
   async (id, thunkAPI) => {

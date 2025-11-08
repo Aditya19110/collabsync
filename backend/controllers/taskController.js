@@ -4,9 +4,6 @@ import List from '../models/listModel.js';
 import Board from '../models/boardModel.js';
 import Activity from '../models/activityModel.js';
 
-// @desc    Get all tasks for a list
-// @route   GET /api/tasks/list/:listId
-// @access  Private
 const getTasksByList = asyncHandler(async (req, res) => {
   const list = await List.findById(req.params.listId);
 
@@ -15,7 +12,6 @@ const getTasksByList = asyncHandler(async (req, res) => {
     throw new Error('List not found');
   }
 
-  // Check if user has access to board
   const board = await Board.findById(list.board);
   const isMember = board.members.some(
     (member) => member.user.toString() === req.user._id.toString()
@@ -34,9 +30,6 @@ const getTasksByList = asyncHandler(async (req, res) => {
   res.json(tasks);
 });
 
-// @desc    Get single task
-// @route   GET /api/tasks/:id
-// @access  Private
 const getTaskById = asyncHandler(async (req, res) => {
   const task = await Task.findById(req.params.id)
     .populate('assignedTo', 'name email avatar')
@@ -48,7 +41,6 @@ const getTaskById = asyncHandler(async (req, res) => {
     throw new Error('Task not found');
   }
 
-  // Check if user has access to board
   const board = await Board.findById(task.board);
   const isMember = board.members.some(
     (member) => member.user.toString() === req.user._id.toString()
@@ -63,9 +55,6 @@ const getTaskById = asyncHandler(async (req, res) => {
   res.json(task);
 });
 
-// @desc    Create new task
-// @route   POST /api/tasks
-// @access  Private
 const createTask = asyncHandler(async (req, res) => {
   const {
     title,
@@ -83,7 +72,6 @@ const createTask = asyncHandler(async (req, res) => {
     throw new Error('Please add title, list, and board');
   }
 
-  // Check if board exists and user has access
   const boardDoc = await Board.findById(board);
 
   if (!boardDoc) {
@@ -101,7 +89,6 @@ const createTask = asyncHandler(async (req, res) => {
     throw new Error('Not authorized to add tasks to this board');
   }
 
-  // Get the max position if not provided
   let taskPosition = position;
   if (taskPosition === undefined || taskPosition === null) {
     const tasks = await Task.find({ list });
@@ -119,7 +106,6 @@ const createTask = asyncHandler(async (req, res) => {
     assignedTo: assignedTo || [],
   });
 
-  // Add task to list
   const listDoc = await List.findById(list);
   listDoc.tasks.push(task._id);
   await listDoc.save();
@@ -132,9 +118,6 @@ const createTask = asyncHandler(async (req, res) => {
   res.status(201).json(populatedTask);
 });
 
-// @desc    Update task
-// @route   PUT /api/tasks/:id
-// @access  Private
 const updateTask = asyncHandler(async (req, res) => {
   const task = await Task.findById(req.params.id);
 
@@ -143,7 +126,6 @@ const updateTask = asyncHandler(async (req, res) => {
     throw new Error('Task not found');
   }
 
-  // Check if user has access to the board
   const board = await Board.findById(task.board);
   const isMember = board.members.some(
     (member) => member.user.toString() === req.user._id.toString()
@@ -174,9 +156,6 @@ const updateTask = asyncHandler(async (req, res) => {
   res.json(populatedTask);
 });
 
-// @desc    Delete task
-// @route   DELETE /api/tasks/:id
-// @access  Private
 const deleteTask = asyncHandler(async (req, res) => {
   const task = await Task.findById(req.params.id);
 
@@ -185,7 +164,6 @@ const deleteTask = asyncHandler(async (req, res) => {
     throw new Error('Task not found');
   }
 
-  // Check if user has access to the board
   const board = await Board.findById(task.board);
   const isMember = board.members.some(
     (member) => member.user.toString() === req.user._id.toString()
@@ -197,7 +175,6 @@ const deleteTask = asyncHandler(async (req, res) => {
     throw new Error('Not authorized to delete this task');
   }
 
-  // Remove task from list
   const list = await List.findById(task.list);
   list.tasks = list.tasks.filter(
     (taskId) => taskId.toString() !== task._id.toString()
@@ -209,9 +186,6 @@ const deleteTask = asyncHandler(async (req, res) => {
   res.json({ message: 'Task removed' });
 });
 
-// @desc    Move task (same list or different list)
-// @route   PUT /api/tasks/:id/move
-// @access  Private
 const moveTask = asyncHandler(async (req, res) => {
   const { newListId, newPosition } = req.body;
 
@@ -227,7 +201,6 @@ const moveTask = asyncHandler(async (req, res) => {
     throw new Error('Task not found');
   }
 
-  // Check if user has access to the board
   const board = await Board.findById(task.board);
   const isMember = board.members.some(
     (member) => member.user.toString() === req.user._id.toString()
@@ -242,27 +215,22 @@ const moveTask = asyncHandler(async (req, res) => {
   const oldListId = task.list.toString();
   const oldPosition = task.position;
 
-  // If moving to a different list
   if (oldListId !== newListId) {
-    // Remove from old list
     const oldList = await List.findById(oldListId);
     oldList.tasks = oldList.tasks.filter(
       (taskId) => taskId.toString() !== task._id.toString()
     );
     await oldList.save();
 
-    // Update positions in old list
     await Task.updateMany(
       { list: oldListId, position: { $gt: oldPosition } },
       { $inc: { position: -1 } }
     );
 
-    // Add to new list
     const newList = await List.findById(newListId);
     newList.tasks.push(task._id);
     await newList.save();
 
-    // Update positions in new list
     await Task.updateMany(
       { list: newListId, position: { $gte: newPosition } },
       { $inc: { position: 1 } }
@@ -271,9 +239,7 @@ const moveTask = asyncHandler(async (req, res) => {
     task.list = newListId;
     task.position = newPosition;
   } else {
-    // Moving within the same list
     if (newPosition < oldPosition) {
-      // Moving up
       await Task.updateMany(
         {
           list: oldListId,
@@ -282,7 +248,6 @@ const moveTask = asyncHandler(async (req, res) => {
         { $inc: { position: 1 } }
       );
     } else if (newPosition > oldPosition) {
-      // Moving down
       await Task.updateMany(
         {
           list: oldListId,
@@ -297,7 +262,6 @@ const moveTask = asyncHandler(async (req, res) => {
 
   await task.save();
 
-  // Return updated task
   const updatedTask = await Task.findById(task._id).populate(
     'assignedTo',
     'name email avatar'
@@ -306,9 +270,6 @@ const moveTask = asyncHandler(async (req, res) => {
   res.json(updatedTask);
 });
 
-// @desc    Add comment to task
-// @route   POST /api/tasks/:id/comments
-// @access  Private
 const addComment = asyncHandler(async (req, res) => {
   const { text } = req.body;
 
@@ -319,7 +280,6 @@ const addComment = asyncHandler(async (req, res) => {
     throw new Error('Task not found');
   }
 
-  // Check if user has access to the board
   const board = await Board.findById(task.board);
   const isMember = board.members.some(
     (member) => member.user.toString() === req.user._id.toString()
@@ -350,13 +310,9 @@ const addComment = asyncHandler(async (req, res) => {
   res.json(updatedTask);
 });
 
-// @desc    Search tasks in a board
-// @route   GET /api/tasks/search/:boardId
-// @access  Private
 const searchTasks = asyncHandler(async (req, res) => {
   const { query, priority, assignedTo, labels, dueDate } = req.query;
 
-  // Verify board access
   const board = await Board.findById(req.params.boardId);
   if (!board) {
     res.status(404);
@@ -373,7 +329,6 @@ const searchTasks = asyncHandler(async (req, res) => {
     throw new Error('Not authorized to access this board');
   }
 
-  // Build search query
   const searchQuery = { board: req.params.boardId, isArchived: false };
 
   if (query) {
@@ -411,9 +366,6 @@ const searchTasks = asyncHandler(async (req, res) => {
   res.json(tasks);
 });
 
-// @desc    Toggle task completion status
-// @route   PUT /api/tasks/:id/complete
-// @access  Private
 const toggleTaskComplete = asyncHandler(async (req, res) => {
   const task = await Task.findById(req.params.id);
 
@@ -422,7 +374,6 @@ const toggleTaskComplete = asyncHandler(async (req, res) => {
     throw new Error('Task not found');
   }
 
-  // Check if user has access to board
   const board = await Board.findById(task.board);
   const isMember = board.members.some(
     (member) => member.user.toString() === req.user._id.toString()
@@ -437,7 +388,6 @@ const toggleTaskComplete = asyncHandler(async (req, res) => {
   task.isCompleted = !task.isCompleted;
   const updatedTask = await task.save();
 
-  // Log activity
   await Activity.create({
     board: task.board,
     task: task._id,

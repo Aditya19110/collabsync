@@ -28,7 +28,6 @@ router
 router.put('/:id/move', protect, moveTask);
 router.put('/:id/complete', protect, toggleTaskComplete);
 
-// Comment routes for tasks
 router
   .route('/:taskId/comments')
   .get(protect, getComments)

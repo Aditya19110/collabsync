@@ -26,11 +26,9 @@ function BoardView() {
 
     dispatch(getBoardById(id));
 
-    // Connect to Socket.IO
     socketService.connect();
     socketService.joinBoard(id);
 
-    // Listen for real-time updates
     socketService.on('taskCreated', (task) => {
       setLists((prevLists) =>
         prevLists.map((list) =>
@@ -90,12 +88,10 @@ function BoardView() {
   const onDragEnd = async (result) => {
     const { source, destination, type } = result;
 
-    // Dropped outside the list
     if (!destination) {
       return;
     }
 
-    // No movement
     if (
       source.droppableId === destination.droppableId &&
       source.index === destination.index
@@ -104,22 +100,18 @@ function BoardView() {
     }
 
     if (type === 'list') {
-      // Reorder lists
       const newLists = Array.from(lists);
       const [removed] = newLists.splice(source.index, 1);
       newLists.splice(destination.index, 0, removed);
 
       setLists(newLists);
 
-      // Update positions in backend
       try {
         await listAPI.moveList(removed._id, destination.index);
       } catch (error) {
-        console.error('Error moving list:', error);
-        setLists(lists); // Revert on error
+        setLists(lists);
       }
     } else {
-      // Reorder tasks
       const sourceListIndex = lists.findIndex((l) => l._id === source.droppableId);
       const destListIndex = lists.findIndex((l) => l._id === destination.droppableId);
 
@@ -129,7 +121,6 @@ function BoardView() {
       const destList = lists[destListIndex];
 
       if (source.droppableId === destination.droppableId) {
-        // Same list
         const newTasks = Array.from(sourceList.tasks);
         const [removed] = newTasks.splice(source.index, 1);
         newTasks.splice(destination.index, 0, removed);
@@ -142,7 +133,6 @@ function BoardView() {
 
         setLists(newLists);
 
-        // Update backend
         try {
           await taskAPI.moveTask(
             removed._id,
@@ -158,11 +148,9 @@ function BoardView() {
             destIndex: destination.index,
           });
         } catch (error) {
-          console.error('Error moving task:', error);
-          setLists(lists); // Revert on error
+          setLists(lists);
         }
       } else {
-        // Different lists
         const sourceTasks = Array.from(sourceList.tasks);
         const destTasks = Array.from(destList.tasks);
         const [removed] = sourceTasks.splice(source.index, 1);
@@ -180,7 +168,6 @@ function BoardView() {
 
         setLists(newLists);
 
-        // Update backend
         try {
           await taskAPI.moveTask(removed._id, destList._id, destination.index);
           socketService.emit('taskMoved', {
@@ -192,8 +179,7 @@ function BoardView() {
             destIndex: destination.index,
           });
         } catch (error) {
-          console.error('Error moving task:', error);
-          setLists(lists); // Revert on error
+          setLists(lists);
         }
       }
     }
@@ -212,7 +198,7 @@ function BoardView() {
         list: response.data,
       });
     } catch (error) {
-      console.error('Error creating list:', error);
+      return;
     }
   };
 
@@ -223,7 +209,7 @@ function BoardView() {
         setLists(lists.filter((l) => l._id !== listId));
         socketService.emit('listDeleted', { boardId: id, listId });
       } catch (error) {
-        console.error('Error deleting list:', error);
+        return;
       }
     }
   };
@@ -257,7 +243,7 @@ function BoardView() {
               onClick={() => navigate('/dashboard')}
               className="px-4 py-2 bg-white bg-opacity-20 rounded hover:bg-opacity-30 transition-colors"
             >
-              ← Back
+              &larr; Back
             </button>
             <h1 className="text-2xl font-bold">{currentBoard.title}</h1>
           </div>

@@ -3,9 +3,6 @@ import Comment from '../models/commentModel.js';
 import Task from '../models/taskModel.js';
 import Activity from '../models/activityModel.js';
 
-// @desc    Get all comments for a task
-// @route   GET /api/tasks/:taskId/comments
-// @access  Private
 export const getComments = asyncHandler(async (req, res) => {
   const comments = await Comment.find({ task: req.params.taskId })
     .populate('user', 'name email avatar')
@@ -15,9 +12,6 @@ export const getComments = asyncHandler(async (req, res) => {
   res.json(comments);
 });
 
-// @desc    Create a new comment
-// @route   POST /api/tasks/:taskId/comments
-// @access  Private
 export const createComment = asyncHandler(async (req, res) => {
   const { text, mentions, attachments } = req.body;
 
@@ -53,9 +47,6 @@ export const createComment = asyncHandler(async (req, res) => {
   res.status(201).json(populatedComment);
 });
 
-// @desc    Update a comment
-// @route   PUT /api/comments/:id
-// @access  Private
 export const updateComment = asyncHandler(async (req, res) => {
   const comment = await Comment.findById(req.params.id);
 
@@ -64,7 +55,6 @@ export const updateComment = asyncHandler(async (req, res) => {
     throw new Error('Comment not found');
   }
 
-  // Check if user owns the comment
   if (comment.user.toString() !== req.user._id.toString()) {
     res.status(403);
     throw new Error('Not authorized to edit this comment');
@@ -80,9 +70,6 @@ export const updateComment = asyncHandler(async (req, res) => {
   res.json(updatedComment);
 });
 
-// @desc    Delete a comment
-// @route   DELETE /api/comments/:id
-// @access  Private
 export const deleteComment = asyncHandler(async (req, res) => {
   const comment = await Comment.findById(req.params.id);
 
@@ -91,7 +78,6 @@ export const deleteComment = asyncHandler(async (req, res) => {
     throw new Error('Comment not found');
   }
 
-  // Check if user owns the comment
   if (comment.user.toString() !== req.user._id.toString()) {
     res.status(403);
     throw new Error('Not authorized to delete this comment');

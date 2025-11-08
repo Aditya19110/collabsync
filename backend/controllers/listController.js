@@ -3,9 +3,6 @@ import List from '../models/listModel.js';
 import Board from '../models/boardModel.js';
 import Task from '../models/taskModel.js';
 
-// @desc    Get all lists for a board
-// @route   GET /api/lists/board/:boardId
-// @access  Private
 const getListsByBoard = asyncHandler(async (req, res) => {
   const board = await Board.findById(req.params.boardId);
 
@@ -14,7 +11,6 @@ const getListsByBoard = asyncHandler(async (req, res) => {
     throw new Error('Board not found');
   }
 
-  // Check if user has access to board
   const isMember = board.members.some(
     (member) => member.user.toString() === req.user._id.toString()
   );
@@ -38,9 +34,6 @@ const getListsByBoard = asyncHandler(async (req, res) => {
   res.json(lists);
 });
 
-// @desc    Create new list
-// @route   POST /api/lists
-// @access  Private
 const createList = asyncHandler(async (req, res) => {
   const { title, board, position } = req.body;
 
@@ -49,7 +42,6 @@ const createList = asyncHandler(async (req, res) => {
     throw new Error('Please add title and board');
   }
 
-  // Check if board exists and user has access
   const boardDoc = await Board.findById(board);
 
   if (!boardDoc) {
@@ -67,7 +59,6 @@ const createList = asyncHandler(async (req, res) => {
     throw new Error('Not authorized to add lists to this board');
   }
 
-  // Get the max position if not provided
   let listPosition = position;
   if (listPosition === undefined || listPosition === null) {
     const lists = await List.find({ board });
@@ -89,9 +80,6 @@ const createList = asyncHandler(async (req, res) => {
   res.status(201).json(populatedList);
 });
 
-// @desc    Update list
-// @route   PUT /api/lists/:id
-// @access  Private
 const updateList = asyncHandler(async (req, res) => {
   const list = await List.findById(req.params.id);
 
@@ -100,7 +88,6 @@ const updateList = asyncHandler(async (req, res) => {
     throw new Error('List not found');
   }
 
-  // Check if user has access to the board
   const board = await Board.findById(list.board);
   const isMember = board.members.some(
     (member) => member.user.toString() === req.user._id.toString()
@@ -124,9 +111,6 @@ const updateList = asyncHandler(async (req, res) => {
   res.json(populatedList);
 });
 
-// @desc    Delete list
-// @route   DELETE /api/lists/:id
-// @access  Private
 const deleteList = asyncHandler(async (req, res) => {
   const list = await List.findById(req.params.id);
 
@@ -135,7 +119,6 @@ const deleteList = asyncHandler(async (req, res) => {
     throw new Error('List not found');
   }
 
-  // Check if user has access to the board
   const board = await Board.findById(list.board);
   const isMember = board.members.some(
     (member) => member.user.toString() === req.user._id.toString()
@@ -161,9 +144,6 @@ const deleteList = asyncHandler(async (req, res) => {
   res.json({ message: 'List removed' });
 });
 
-// @desc    Move list (update positions)
-// @route   PUT /api/lists/:id/move
-// @access  Private
 const moveList = asyncHandler(async (req, res) => {
   const { newPosition } = req.body;
 
@@ -179,7 +159,6 @@ const moveList = asyncHandler(async (req, res) => {
     throw new Error('List not found');
   }
 
-  // Check if user has access to the board
   const board = await Board.findById(list.board);
   const isMember = board.members.some(
     (member) => member.user.toString() === req.user._id.toString()

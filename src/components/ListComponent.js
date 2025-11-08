@@ -22,7 +22,7 @@ function ListComponent({ list, index, boardId, onDeleteList }) {
         task: response.data,
       });
     } catch (error) {
-      console.error('Error creating task:', error);
+      return;
     }
   };
 
@@ -33,21 +33,21 @@ function ListComponent({ list, index, boardId, onDeleteList }) {
         setTasks(tasks.filter((t) => t._id !== taskId));
         socketService.emit('taskDeleted', { boardId, taskId });
       } catch (error) {
-        console.error('Error deleting task:', error);
+        return;
       }
     }
   };
 
   const handleUpdateTask = async (taskId, updates) => {
     try {
-      const response = await taskAPI.updateTask(taskId, updates);
-      setTasks(tasks.map((t) => (t._id === taskId ? response.data : t)));
-      socketService.emit('taskUpdated', {
-        boardId,
-        task: response.data,
-      });
+      const updatedTasks = tasks.map((t) =>
+        t._id === taskId ? { ...t, ...updates } : t
+      );
+      setTasks(updatedTasks);
+      await taskAPI.updateTask(taskId, updates);
+      socketService.emit('taskUpdated', { boardId, taskId, updates });
     } catch (error) {
-      console.error('Error updating task:', error);
+      return;
     }
   };
 
@@ -70,7 +70,7 @@ function ListComponent({ list, index, boardId, onDeleteList }) {
               onClick={() => onDeleteList(list._id)}
               className="text-gray-500 hover:text-red-500 transition-colors"
             >
-              ×
+              &times;
             </button>
           </div>
 

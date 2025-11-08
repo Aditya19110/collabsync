@@ -19,7 +19,6 @@ function App() {
   );
 }
 
-// Private Route wrapper
 function PrivateRoute({ children }) {
   const { user } = useSelector((state) => state.auth);
   return user ? children : <Navigate to="/login" />;

@@ -14,13 +14,8 @@ class SocketService {
       reconnectionAttempts: 5,
     });
 
-    this.socket.on('connect', () => {
-      console.log('✅ Connected to Socket.IO server');
-    });
-
-    this.socket.on('disconnect', () => {
-      console.log('❌ Disconnected from Socket.IO server');
-    });
+    this.socket.on('connect', () => {});
+    this.socket.on('disconnect', () => {});
 
     return this.socket;
   }

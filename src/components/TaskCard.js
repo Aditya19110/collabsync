@@ -65,7 +65,7 @@ function TaskCard({ task, index, onDelete, onUpdate }) {
                   onClick={() => onDelete(task._id)}
                   className="text-gray-400 hover:text-red-500 transition-colors"
                 >
-                  ×
+                  &times;
                 </button>
               </div>
 
@@ -100,7 +100,7 @@ function TaskCard({ task, index, onDelete, onUpdate }) {
                       : 'bg-gray-100 text-gray-700'
                   }`}
                 >
-                  {task.isCompleted ? '✓ Done' : 'Mark Done'}
+                  {task.isCompleted ? 'Done' : 'Mark Done'}
                 </button>
               </div>
             </div>

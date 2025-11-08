@@ -3,7 +3,6 @@ import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
-// Get user from localStorage
 const user = JSON.parse(localStorage.getItem('user'));
 
 const initialState = {
@@ -14,7 +13,6 @@ const initialState = {
   message: '',
 };
 
-// Register user
 export const register = createAsyncThunk(
   'auth/register',
   async (userData, thunkAPI) => {
@@ -34,7 +32,6 @@ export const register = createAsyncThunk(
   }
 );
 
-// Login user
 export const login = createAsyncThunk('auth/login', async (userData, thunkAPI) => {
   try {
     const response = await axios.post(`${API_URL}/api/users/login`, userData);
@@ -51,12 +48,10 @@ export const login = createAsyncThunk('auth/login', async (userData, thunkAPI) =
   }
 });
 
-// Logout user
 export const logout = createAsyncThunk('auth/logout', async () => {
   localStorage.removeItem('user');
 });
 
-// Get user profile
 export const getProfile = createAsyncThunk('auth/getProfile', async (_, thunkAPI) => {
   try {
     const token = thunkAPI.getState().auth.user.token;

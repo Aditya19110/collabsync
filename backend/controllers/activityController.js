@@ -2,13 +2,9 @@ import asyncHandler from 'express-async-handler';
 import Activity from '../models/activityModel.js';
 import Board from '../models/boardModel.js';
 
-// @desc    Get activity feed for a board
-// @route   GET /api/boards/:boardId/activity
-// @access  Private
 export const getBoardActivity = asyncHandler(async (req, res) => {
   const { limit = 50, skip = 0 } = req.query;
 
-  // Verify board exists and user has access
   const board = await Board.findById(req.params.boardId);
   if (!board) {
     res.status(404);
@@ -41,9 +37,6 @@ export const getBoardActivity = asyncHandler(async (req, res) => {
   });
 });
 
-// @desc    Get activity feed for a task
-// @route   GET /api/tasks/:taskId/activity
-// @access  Private
 export const getTaskActivity = asyncHandler(async (req, res) => {
   const activities = await Activity.find({ task: req.params.taskId })
     .populate('user', 'name email avatar')
@@ -52,13 +45,11 @@ export const getTaskActivity = asyncHandler(async (req, res) => {
   res.json(activities);
 });
 
-// @desc    Create activity log (helper function)
-// @route   N/A (used internally)
-// @access  Private
 export const createActivity = async (data) => {
   try {
-    await Activity.create(data);
+    await activity.save();
   } catch (error) {
-    console.error('Error creating activity log:', error);
+    return;
   }
 };
+

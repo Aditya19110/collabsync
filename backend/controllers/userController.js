@@ -2,9 +2,6 @@ import asyncHandler from 'express-async-handler';
 import User from '../models/userModel.js';
 import generateToken from '../utils/generateToken.js';
 
-// @desc    Register new user
-// @route   POST /api/users/register
-// @access  Public
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -13,7 +10,6 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error('Please add all fields');
   }
 
-  // Check if user exists
   const userExists = await User.findOne({ email });
 
   if (userExists) {
@@ -42,13 +38,9 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Authenticate a user
-// @route   POST /api/users/login
-// @access  Public
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  // Check for user email
   const user = await User.findOne({ email }).select('+password');
 
   if (user && (await user.matchPassword(password))) {
@@ -65,9 +57,6 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Get user profile
-// @route   GET /api/users/profile
-// @access  Private
 const getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id).populate('boards');
 
@@ -85,9 +74,6 @@ const getUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Update user profile
-// @route   PUT /api/users/profile
-// @access  Private
 const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
 
@@ -115,9 +101,6 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Search users by email (for invites)
-// @route   GET /api/users/search?email=
-// @access  Private
 const searchUsers = asyncHandler(async (req, res) => {
   const { email } = req.query;
 
