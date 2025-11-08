@@ -52,66 +52,6 @@ CollabSync is a web-based project management platform inspired by Trello/Asana, 
 
 ---
 
-## 📂 Project Structure
-
-```
-collabsync/
-│
-├── backend/
-│   ├── server.js                 # Entry point with Socket.IO
-│   ├── config/
-│   │   └── db.js                 # MongoDB connection
-│   ├── models/
-│   │   ├── userModel.js          # User schema
-│   │   ├── boardModel.js         # Board schema
-│   │   ├── listModel.js          # List schema
-│   │   └── taskModel.js          # Task schema
-│   ├── routes/
-│   │   ├── userRoutes.js         # Auth & user routes
-│   │   ├── boardRoutes.js        # Board CRUD routes
-│   │   ├── listRoutes.js         # List CRUD routes
-│   │   └── taskRoutes.js         # Task CRUD routes
-│   ├── controllers/
-│   │   ├── userController.js     # User logic
-│   │   ├── boardController.js    # Board logic
-│   │   ├── listController.js     # List logic
-│   │   └── taskController.js     # Task logic
-│   ├── middleware/
-│   │   └── authMiddleware.js     # JWT verification
-│   ├── utils/
-│   │   └── generateToken.js      # JWT token generator
-│   └── package.json
-│
-├── frontend/ (root directory)
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── ListComponent.js  # List with tasks
-│   │   │   ├── TaskCard.js       # Individual task card
-│   │   │   ├── CreateTask.js     # Task creation form
-│   │   │   └── CreateList.js     # List creation form
-│   │   ├── pages/
-│   │   │   ├── Login.js          # Login page
-│   │   │   ├── Register.js       # Registration page
-│   │   │   ├── Dashboard.js      # User dashboard
-│   │   │   └── BoardView.js      # Board with drag-drop
-│   │   ├── redux/
-│   │   │   ├── store.js          # Redux store
-│   │   │   └── slices/
-│   │   │       ├── authSlice.js  # Auth state
-│   │   │       └── boardSlice.js # Board state
-│   │   ├── utils/
-│   │   │   ├── socketService.js  # Socket.IO client
-│   │   │   └── api.js            # Axios API helpers
-│   │   ├── App.js                # Main app with routes
-│   │   └── index.js              # Entry point
-│   ├── public/
-│   └── package.json
-│
-└── README.md
-```
-
----
-
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -125,7 +65,7 @@ collabsync/
 #### 1. Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/collabsync.git
+git clone https://github.com/Aditya19110/collabsync.git
 cd collabsync
 ```
 
@@ -141,7 +81,7 @@ Create a `.env` file in the `backend` directory:
 ```env
 NODE_ENV=development
 PORT=5000
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/collabsync?retryWrites=true&w=majority
+MONGODB_URI=ur_mongo_atlas
 JWT_SECRET=your_jwt_secret_key_here_change_in_production
 JWT_EXPIRE=30d
 
@@ -258,77 +198,6 @@ The frontend will run on `http://localhost:3000`
 
 ---
 
-## 🚀 Deployment
-
-### Backend Deployment (Render)
-
-1. Create a new Web Service on Render
-2. Connect your GitHub repository
-3. Set the root directory to `backend`
-4. Set build command: `npm install`
-5. Set start command: `npm start`
-6. Add environment variables from `.env.example`
-7. Deploy
-
-### Frontend Deployment (Vercel)
-
-1. Install Vercel CLI: `npm i -g vercel`
-2. Run `vercel` in the root directory
-3. Follow the prompts
-4. Set environment variables:
-   - `REACT_APP_API_URL` - Your Render backend URL
-   - `REACT_APP_SOCKET_URL` - Your Render backend URL
-5. Deploy with `vercel --prod`
-
-### Database (MongoDB Atlas)
-
-1. Create a cluster on MongoDB Atlas
-2. Create a database user
-3. Whitelist IP addresses (or allow from anywhere for testing)
-4. Get connection string and add to backend `.env`
-
----
-
-## 🧪 Testing
-
-### Backend Tests
-
-```bash
-cd backend
-npm test
-```
-
-### Frontend Tests
-
-```bash
-npm test
-```
-
----
-
-## 📝 Environment Variables
-
-### Backend (.env)
-```env
-NODE_ENV=development
-PORT=5000
-MONGODB_URI=<your-mongodb-uri>
-JWT_SECRET=<your-secret-key>
-JWT_EXPIRE=30d
-EMAIL_SERVICE=gmail
-EMAIL_USER=<your-email>
-EMAIL_PASS=<your-app-password>
-FRONTEND_URL=http://localhost:3000
-```
-
-### Frontend (.env)
-```env
-REACT_APP_API_URL=http://localhost:5000
-REACT_APP_SOCKET_URL=http://localhost:5000
-```
-
----
-
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
@@ -351,18 +220,11 @@ This project is licensed under the MIT License.
 
 **Aditya Kulkarni**
 
-- GitHub: [@adityakulkarni](https://github.com/yourusername)
-- LinkedIn: [Aditya Kulkarni](https://linkedin.com/in/yourprofile)
+- GitHub: [@adityakulkarni](https://github.com/Aditya19110)
+- LinkedIn: [Aditya Kulkarni](https://linkedin.com/in/aditya191103)
 
 ---
 
-## 🙏 Acknowledgments
-
-- Inspired by Trello and Asana
-- Built for demonstrating full-stack MERN development skills
-- Designed to showcase API integration and real-time collaboration features
-
----
 
 ## 🔮 Future Enhancements
 
@@ -380,69 +242,3 @@ This project is licensed under the MIT License.
 ---
 
 **Made with ❤️ by Aditya Kulkarni**
-
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
