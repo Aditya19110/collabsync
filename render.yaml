@@ -1,0 +1,29 @@
+# render.yaml
+# Render Blueprint for CollabSync Backend
+# This file configures automatic deployment to Render
+
+services:
+  - type: web
+    name: collabsync-backend
+    runtime: node
+    region: oregon  # Change to your preferred region
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    rootDir: backend
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGODB_URI
+        sync: false  # Add manually in Render dashboard
+      - key: JWT_SECRET
+        sync: false  # Add manually in Render dashboard
+      - key: FRONTEND_URL
+        sync: false  # Add manually in Render dashboard
+      - key: EMAIL_USER
+        sync: false  # Add manually in Render dashboard
+      - key: EMAIL_PASS
+        sync: false  # Add manually in Render dashboard
+    healthCheckPath: /
