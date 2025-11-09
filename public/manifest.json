@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "CollabSync",
+  "name": "CollabSync - Collaborative Project Management",
+  "description": "Real-time collaborative project management platform for teams",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +21,8 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#1e40af",
+  "background_color": "#ffffff",
+  "categories": ["productivity", "business"],
+  "orientation": "any"
 }
