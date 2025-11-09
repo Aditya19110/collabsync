@@ -364,6 +364,23 @@ In Render Dashboard → Your Service → Logs:
 3. Test build locally: `npm run build`
 4. Check Node version compatibility (Vercel uses Node 18 by default)
 
+### Issue: React Version Conflict on Render/Vercel
+
+**Symptom:** `npm error ERESOLVE could not resolve` - React version conflict with react-beautiful-dnd
+
+**Solution:**
+This has been fixed in the project. The package.json uses React 18 which is compatible with all dependencies.
+
+If you encounter this issue:
+1. Ensure `package.json` shows React 18.2.0 (not 19.x):
+   ```json
+   "react": "^18.2.0",
+   "react-dom": "^18.2.0"
+   ```
+2. Delete `node_modules` and `package-lock.json`
+3. Run `npm install` again
+4. Commit and push changes to trigger redeploy
+
 ### Issue: Render Free Tier Spinning Down
 
 **Symptom:** First request takes 30-60 seconds
