@@ -1,4 +1,4 @@
-# 🧩 CollabSync
+# CollabSync
 
 **A Real-Time Project & Team Management Web App built with the MERN Stack**
 
@@ -6,18 +6,18 @@ CollabSync is a web-based project management platform inspired by Trello/Asana, 
 
 ---
 
-## 🚀 Features
+## Features
 
 | Feature | Description |
 |---------|-------------|
-| 🔐 **User Authentication** | Register/Login using JWT and bcrypt for secure password storage |
-| 🧑‍🤝‍🧑 **Team Management** | Invite team members to boards via email |
-| 📋 **Board & Task System** | Create boards, lists, and tasks under each board |
-| 🖱️ **Drag-and-Drop Interface** | Move tasks between lists using React Beautiful DnD |
-| 💬 **Real-time Updates** | Socket.IO integration for instant task updates among team members |
-| 📆 **Due Dates & Priority** | Assign due dates and priority levels for each task |
-| 📊 **Dashboard** | Visual overview of project progress |
-| ☁️ **Deployment Ready** | Full deployment on Render (backend) and Vercel (frontend) |
+| **User Authentication** | Register/Login using JWT and bcrypt for secure password storage |
+| **Team Management** | Invite team members to boards via email |
+| **Board & Task System** | Create boards, lists, and tasks under each board |
+| **Drag-and-Drop Interface** | Move tasks between lists using React Beautiful DnD |
+| **Real-time Updates** | Socket.IO integration for instant task updates among team members |
+| **Due Dates & Priority** | Assign due dates and priority levels for each task |
+| **Dashboard** | Visual overview of project progress |
+| **Deployment Ready** | Full deployment on Render (backend) and Vercel (frontend) |
 
 ---
 
@@ -52,7 +52,7 @@ CollabSync is a web-based project management platform inspired by Trello/Asana, 
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -126,7 +126,7 @@ The frontend will run on `http://localhost:3000`
 
 ---
 
-## 🎯 Usage
+## Usage
 
 1. **Register/Login**: Create an account or log in
 2. **Create Board**: Click "Create New Board" on the dashboard
@@ -138,7 +138,7 @@ The frontend will run on `http://localhost:3000`
 
 ---
 
-## 📡 API Endpoints
+## API Endpoints
 
 ### Authentication
 - `POST /api/users/register` - Register new user
@@ -174,7 +174,7 @@ The frontend will run on `http://localhost:3000`
 
 ---
 
-## 🔌 Socket.IO Events
+## Socket.IO Events
 
 ### Client → Server
 - `joinBoard` - Join a board room
@@ -198,7 +198,7 @@ The frontend will run on `http://localhost:3000`
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
@@ -210,13 +210,13 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License.
 
 ---
 
-## 👨‍💻 Author
+## Author
 
 **Aditya Kulkarni**
 
@@ -226,7 +226,7 @@ This project is licensed under the MIT License.
 ---
 
 
-## 🔮 Future Enhancements
+## Future Enhancements
 
 - [ ] File attachments for tasks
 - [ ] Task comments and activity feed
