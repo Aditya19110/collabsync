@@ -17,13 +17,13 @@ services:
       - key: PORT
         value: 5000
       - key: MONGODB_URI
-        sync: false  # Add manually in Render dashboard
+        sync: false
       - key: JWT_SECRET
-        sync: false  # Add manually in Render dashboard
+        sync: false
       - key: FRONTEND_URL
-        sync: false  # Add manually in Render dashboard
+        value: https://collabsync-ak.vercel.app
       - key: EMAIL_USER
-        sync: false  # Add manually in Render dashboard
+        sync: false
       - key: EMAIL_PASS
-        sync: false  # Add manually in Render dashboard
+        sync: false
     healthCheckPath: /
