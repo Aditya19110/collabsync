@@ -16,17 +16,35 @@ connectDB();
 
 const app = express();
 
+app.set('trust proxy', 1);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+const allowedOrigins = [
+  'https://collabsync-ak.vercel.app',
+  'http://localhost:3000',
+  'http://localhost:5000'
+];
+
 app.use(
   cors({
-    origin: '*',
-    credentials: false,
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(null, true);
+      }
+    },
+    credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+    exposedHeaders: ['Content-Range', 'X-Content-Range'],
+    maxAge: 86400
   })
 );
+
+app.options('*', cors());
 
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to CollabSync API' });
@@ -52,8 +70,8 @@ const httpServer = createServer(app);
 
 const io = new Server(httpServer, {
   cors: {
-    origin: '*',
-    credentials: false,
+    origin: allowedOrigins,
+    credentials: true,
     methods: ['GET', 'POST'],
   },
 });
